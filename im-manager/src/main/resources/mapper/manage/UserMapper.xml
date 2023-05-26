@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.UserMapper">
+    
+    <resultMap type="User" id="UserResult">
+        <result property="id"    column="id"    />
+        <result property="username"    column="username"    />
+        <result property="account"    column="account"    />
+        <result property="password"    column="password"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="bigAvatar"    column="big_avatar"    />
+        <result property="miniAvatar"    column="mini_avatar"    />
+        <result property="qrcode"    column="qrcode"    />
+        <result property="cid"    column="cid"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectUserVo">
+        select id, username, account, password, phone, email, big_avatar, mini_avatar, qrcode, cid, create_time, update_time from tb_user
+    </sql>
+
+    <select id="selectUserList" parameterType="User" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        <where>  
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="account != null  and account != ''"> and account = #{account}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="bigAvatar != null  and bigAvatar != ''"> and big_avatar = #{bigAvatar}</if>
+            <if test="miniAvatar != null  and miniAvatar != ''"> and mini_avatar = #{miniAvatar}</if>
+            <if test="qrcode != null  and qrcode != ''"> and qrcode = #{qrcode}</if>
+            <if test="cid != null  and cid != ''"> and cid = #{cid}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserById" parameterType="Long" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUser" parameterType="User">
+        insert into tb_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="username != null">username,</if>
+            <if test="account != null">account,</if>
+            <if test="password != null">password,</if>
+            <if test="phone != null">phone,</if>
+            <if test="email != null">email,</if>
+            <if test="bigAvatar != null">big_avatar,</if>
+            <if test="miniAvatar != null">mini_avatar,</if>
+            <if test="qrcode != null">qrcode,</if>
+            <if test="cid != null">cid,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="username != null">#{username},</if>
+            <if test="account != null">#{account},</if>
+            <if test="password != null">#{password},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="bigAvatar != null">#{bigAvatar},</if>
+            <if test="miniAvatar != null">#{miniAvatar},</if>
+            <if test="qrcode != null">#{qrcode},</if>
+            <if test="cid != null">#{cid},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update tb_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null">username = #{username},</if>
+            <if test="account != null">account = #{account},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="bigAvatar != null">big_avatar = #{bigAvatar},</if>
+            <if test="miniAvatar != null">mini_avatar = #{miniAvatar},</if>
+            <if test="qrcode != null">qrcode = #{qrcode},</if>
+            <if test="cid != null">cid = #{cid},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="Long">
+        delete from tb_user where id = #{id}
+    </delete>
+
+    <delete id="deleteUserByIds" parameterType="String">
+        delete from tb_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

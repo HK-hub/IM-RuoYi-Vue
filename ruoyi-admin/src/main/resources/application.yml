@@ -129,3 +129,9 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+author: HK意境 # 开发者姓名，生成到类注释上
+packageName: com.ruoyi.im # 默认生成包路径
+autoRemovePre: true # 是否自动去除表前缀
+tablePrefix: tb_ # 表前缀
+
