@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.MessageFileMapper">
+    
+    <resultMap type="MessageFile" id="MessageFileResult">
+        <result property="id"    column="id"    />
+        <result property="resourceId"    column="resource_id"    />
+        <result property="messageId"    column="message_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="source"    column="source"    />
+        <result property="type"    column="type"    />
+        <result property="drive"    column="drive"    />
+        <result property="originalName"    column="original_name"    />
+        <result property="suffix"    column="suffix"    />
+        <result property="size"    column="size"    />
+        <result property="path"    column="path"    />
+        <result property="url"    column="url"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectMessageFileVo">
+        select id, resource_id, message_id, user_id, source, type, drive, original_name, suffix, size, path, url, update_time, create_time from tb_message_file
+    </sql>
+
+    <select id="selectMessageFileList" parameterType="MessageFile" resultMap="MessageFileResult">
+        <include refid="selectMessageFileVo"/>
+        <where>  
+            <if test="resourceId != null "> and resource_id = #{resourceId}</if>
+            <if test="messageId != null  and messageId != ''"> and message_id = #{messageId}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="source != null  and source != ''"> and source = #{source}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="drive != null  and drive != ''"> and drive = #{drive}</if>
+            <if test="originalName != null  and originalName != ''"> and original_name like concat('%', #{originalName}, '%')</if>
+            <if test="suffix != null  and suffix != ''"> and suffix = #{suffix}</if>
+            <if test="size != null  and size != ''"> and size = #{size}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+        </where>
+    </select>
+    
+    <select id="selectMessageFileById" parameterType="String" resultMap="MessageFileResult">
+        <include refid="selectMessageFileVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMessageFile" parameterType="MessageFile">
+        insert into tb_message_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="resourceId != null">resource_id,</if>
+            <if test="messageId != null and messageId != ''">message_id,</if>
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="source != null and source != ''">source,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="drive != null and drive != ''">drive,</if>
+            <if test="originalName != null and originalName != ''">original_name,</if>
+            <if test="suffix != null and suffix != ''">suffix,</if>
+            <if test="size != null and size != ''">size,</if>
+            <if test="path != null and path != ''">path,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="resourceId != null">#{resourceId},</if>
+            <if test="messageId != null and messageId != ''">#{messageId},</if>
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="source != null and source != ''">#{source},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="drive != null and drive != ''">#{drive},</if>
+            <if test="originalName != null and originalName != ''">#{originalName},</if>
+            <if test="suffix != null and suffix != ''">#{suffix},</if>
+            <if test="size != null and size != ''">#{size},</if>
+            <if test="path != null and path != ''">#{path},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMessageFile" parameterType="MessageFile">
+        update tb_message_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="resourceId != null">resource_id = #{resourceId},</if>
+            <if test="messageId != null and messageId != ''">message_id = #{messageId},</if>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="source != null and source != ''">source = #{source},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="drive != null and drive != ''">drive = #{drive},</if>
+            <if test="originalName != null and originalName != ''">original_name = #{originalName},</if>
+            <if test="suffix != null and suffix != ''">suffix = #{suffix},</if>
+            <if test="size != null and size != ''">size = #{size},</if>
+            <if test="path != null and path != ''">path = #{path},</if>
+            <if test="url != null and url != ''">url = #{url},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMessageFileById" parameterType="String">
+        delete from tb_message_file where id = #{id}
+    </delete>
+
+    <delete id="deleteMessageFileByIds" parameterType="String">
+        delete from tb_message_file where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

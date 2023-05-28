@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.GroupMapper">
+    
+    <resultMap type="Group" id="GroupResult">
+        <result property="id"    column="id"    />
+        <result property="groupAccount"    column="group_account"    />
+        <result property="groupName"    column="group_name"    />
+        <result property="groupAvatar"    column="group_avatar"    />
+        <result property="description"    column="description"    />
+        <result property="groupType"    column="group_type"    />
+        <result property="qrcode"    column="qrcode"    />
+        <result property="memberCount"    column="member_count"    />
+        <result property="groupMaster"    column="group_master"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectGroupVo">
+        select id, group_account, group_name, group_avatar, description, group_type, qrcode, member_count, group_master, create_time, update_time from tb_group
+    </sql>
+
+    <select id="selectGroupList" parameterType="Group" resultMap="GroupResult">
+        <include refid="selectGroupVo"/>
+        <where>  
+            <if test="groupAccount != null "> and group_account = #{groupAccount}</if>
+            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
+            <if test="groupAvatar != null  and groupAvatar != ''"> and group_avatar = #{groupAvatar}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="groupType != null "> and group_type = #{groupType}</if>
+            <if test="qrcode != null  and qrcode != ''"> and qrcode = #{qrcode}</if>
+            <if test="memberCount != null "> and member_count = #{memberCount}</if>
+            <if test="groupMaster != null "> and group_master = #{groupMaster}</if>
+        </where>
+    </select>
+    
+    <select id="selectGroupById" parameterType="Long" resultMap="GroupResult">
+        <include refid="selectGroupVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGroup" parameterType="Group">
+        insert into tb_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="groupAccount != null">group_account,</if>
+            <if test="groupName != null">group_name,</if>
+            <if test="groupAvatar != null">group_avatar,</if>
+            <if test="description != null">description,</if>
+            <if test="groupType != null">group_type,</if>
+            <if test="qrcode != null">qrcode,</if>
+            <if test="memberCount != null">member_count,</if>
+            <if test="groupMaster != null">group_master,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="groupAccount != null">#{groupAccount},</if>
+            <if test="groupName != null">#{groupName},</if>
+            <if test="groupAvatar != null">#{groupAvatar},</if>
+            <if test="description != null">#{description},</if>
+            <if test="groupType != null">#{groupType},</if>
+            <if test="qrcode != null">#{qrcode},</if>
+            <if test="memberCount != null">#{memberCount},</if>
+            <if test="groupMaster != null">#{groupMaster},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGroup" parameterType="Group">
+        update tb_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupAccount != null">group_account = #{groupAccount},</if>
+            <if test="groupName != null">group_name = #{groupName},</if>
+            <if test="groupAvatar != null">group_avatar = #{groupAvatar},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="groupType != null">group_type = #{groupType},</if>
+            <if test="qrcode != null">qrcode = #{qrcode},</if>
+            <if test="memberCount != null">member_count = #{memberCount},</if>
+            <if test="groupMaster != null">group_master = #{groupMaster},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGroupById" parameterType="Long">
+        delete from tb_group where id = #{id}
+    </delete>
+
+    <delete id="deleteGroupByIds" parameterType="String">
+        delete from tb_group where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

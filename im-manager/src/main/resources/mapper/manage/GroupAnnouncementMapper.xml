@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.GroupAnnouncementMapper">
+    
+    <resultMap type="GroupAnnouncement" id="GroupAnnouncementResult">
+        <result property="id"    column="id"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="groupAccount"    column="group_account"    />
+        <result property="type"    column="type"    />
+        <result property="author"    column="author"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="top"    column="top"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectGroupAnnouncementVo">
+        select id, group_id, group_account, type, author, title, content, top, deleted, create_time, update_time from tb_group_announcement
+    </sql>
+
+    <select id="selectGroupAnnouncementList" parameterType="GroupAnnouncement" resultMap="GroupAnnouncementResult">
+        <include refid="selectGroupAnnouncementVo"/>
+        <where>  
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="groupAccount != null "> and group_account = #{groupAccount}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="author != null "> and author = #{author}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="top != null "> and top = #{top}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectGroupAnnouncementById" parameterType="Long" resultMap="GroupAnnouncementResult">
+        <include refid="selectGroupAnnouncementVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGroupAnnouncement" parameterType="GroupAnnouncement">
+        insert into tb_group_announcement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="groupAccount != null">group_account,</if>
+            <if test="type != null">type,</if>
+            <if test="author != null">author,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="top != null">top,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="groupAccount != null">#{groupAccount},</if>
+            <if test="type != null">#{type},</if>
+            <if test="author != null">#{author},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="top != null">#{top},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGroupAnnouncement" parameterType="GroupAnnouncement">
+        update tb_group_announcement
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="groupAccount != null">group_account = #{groupAccount},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="top != null">top = #{top},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGroupAnnouncementById" parameterType="Long">
+        delete from tb_group_announcement where id = #{id}
+    </delete>
+
+    <delete id="deleteGroupAnnouncementByIds" parameterType="String">
+        delete from tb_group_announcement where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

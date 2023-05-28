@@ -10,7 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author HK意境
  * @date 2023-05-26
  */
-@Mapper
 public interface UserMapper
 {
     /**

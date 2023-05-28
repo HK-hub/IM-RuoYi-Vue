@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.GroupApplyMapper">
+    
+    <resultMap type="GroupApply" id="GroupApplyResult">
+        <result property="id"    column="id"    />
+        <result property="senderId"    column="sender_id"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="handlerId"    column="handler_id"    />
+        <result property="applyType"    column="apply_type"    />
+        <result property="applyInfo"    column="apply_info"    />
+        <result property="status"    column="status"    />
+        <result property="handleInfo"    column="handle_info"    />
+        <result property="sign"    column="sign"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectGroupApplyVo">
+        select id, sender_id, group_id, handler_id, apply_type, apply_info, status, handle_info, sign, create_time, update_time from tb_group_apply
+    </sql>
+
+    <select id="selectGroupApplyList" parameterType="GroupApply" resultMap="GroupApplyResult">
+        <include refid="selectGroupApplyVo"/>
+        <where>  
+            <if test="senderId != null "> and sender_id = #{senderId}</if>
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="handlerId != null "> and handler_id = #{handlerId}</if>
+            <if test="applyType != null "> and apply_type = #{applyType}</if>
+            <if test="applyInfo != null  and applyInfo != ''"> and apply_info = #{applyInfo}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="handleInfo != null  and handleInfo != ''"> and handle_info = #{handleInfo}</if>
+            <if test="sign != null "> and sign = #{sign}</if>
+        </where>
+    </select>
+    
+    <select id="selectGroupApplyById" parameterType="Long" resultMap="GroupApplyResult">
+        <include refid="selectGroupApplyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGroupApply" parameterType="GroupApply">
+        insert into tb_group_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="senderId != null">sender_id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="handlerId != null">handler_id,</if>
+            <if test="applyType != null">apply_type,</if>
+            <if test="applyInfo != null">apply_info,</if>
+            <if test="status != null">status,</if>
+            <if test="handleInfo != null">handle_info,</if>
+            <if test="sign != null">sign,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="senderId != null">#{senderId},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="handlerId != null">#{handlerId},</if>
+            <if test="applyType != null">#{applyType},</if>
+            <if test="applyInfo != null">#{applyInfo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="handleInfo != null">#{handleInfo},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGroupApply" parameterType="GroupApply">
+        update tb_group_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="senderId != null">sender_id = #{senderId},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="handlerId != null">handler_id = #{handlerId},</if>
+            <if test="applyType != null">apply_type = #{applyType},</if>
+            <if test="applyInfo != null">apply_info = #{applyInfo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="handleInfo != null">handle_info = #{handleInfo},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGroupApplyById" parameterType="Long">
+        delete from tb_group_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteGroupApplyByIds" parameterType="String">
+        delete from tb_group_apply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.FriendMapper">
+    
+    <resultMap type="Friend" id="FriendResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="friendId"    column="friend_id"    />
+        <result property="relation"    column="relation"    />
+        <result property="group"    column="group"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="remarkName"    column="remark_name"    />
+        <result property="remarkInfo"    column="remark_info"    />
+        <result property="robot"    column="robot"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="disturb"    column="disturb"    />
+        <result property="top"    column="top"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFriendVo">
+        select id, user_id, friend_id, relation, `group`, group_id, nickname, remark_name, remark_info, robot, avatar, disturb, top, create_time, update_time from tb_friend
+    </sql>
+
+    <select id="selectFriendList" parameterType="Friend" resultMap="FriendResult">
+        <include refid="selectFriendVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="friendId != null "> and friend_id = #{friendId}</if>
+            <if test="relation != null "> and relation = #{relation}</if>
+            <if test="group != null  and group != ''"> and group like concat('%', #{group}, '%')</if>
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
+            <if test="remarkName != null  and remarkName != ''"> and remark_name like concat('%', #{remarkName}, '%')</if>
+            <if test="remarkInfo != null  and remarkInfo != ''"> and remark_info = #{remarkInfo}</if>
+            <if test="robot != null "> and robot = #{robot}</if>
+            <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="disturb != null "> and disturb = #{disturb}</if>
+            <if test="top != null "> and top = #{top}</if>
+        </where>
+    </select>
+    
+    <select id="selectFriendById" parameterType="Long" resultMap="FriendResult">
+        <include refid="selectFriendVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFriend" parameterType="Friend">
+        insert into tb_friend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="friendId != null">friend_id,</if>
+            <if test="relation != null">relation,</if>
+            <if test="group != null">group,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="remarkName != null">remark_name,</if>
+            <if test="remarkInfo != null">remark_info,</if>
+            <if test="robot != null">robot,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="disturb != null">disturb,</if>
+            <if test="top != null">top,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="friendId != null">#{friendId},</if>
+            <if test="relation != null">#{relation},</if>
+            <if test="group != null">#{group},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="remarkName != null">#{remarkName},</if>
+            <if test="remarkInfo != null">#{remarkInfo},</if>
+            <if test="robot != null">#{robot},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="disturb != null">#{disturb},</if>
+            <if test="top != null">#{top},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFriend" parameterType="Friend">
+        update tb_friend
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="friendId != null">friend_id = #{friendId},</if>
+            <if test="relation != null">relation = #{relation},</if>
+            <if test="group != null">group = #{group},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="remarkName != null">remark_name = #{remarkName},</if>
+            <if test="remarkInfo != null">remark_info = #{remarkInfo},</if>
+            <if test="robot != null">robot = #{robot},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="disturb != null">disturb = #{disturb},</if>
+            <if test="top != null">top = #{top},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFriendById" parameterType="Long">
+        delete from tb_friend where id = #{id}
+    </delete>
+
+    <delete id="deleteFriendByIds" parameterType="String">
+        delete from tb_friend where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.NoteMapper">
+    
+    <resultMap type="Note" id="NoteResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="summary"    column="summary"    />
+        <result property="mdContent"    column="md_content"    />
+        <result property="content"    column="content"    />
+        <result property="cover"    column="cover"    />
+        <result property="authorId"    column="author_id"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="status"    column="status"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectNoteVo">
+        select id, title, summary, md_content, content, cover, author_id, category_id, status, deleted, create_time, update_time from tb_note
+    </sql>
+
+    <select id="selectNoteList" parameterType="Note" resultMap="NoteResult">
+        <include refid="selectNoteVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
+            <if test="mdContent != null  and mdContent != ''"> and md_content = #{mdContent}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="cover != null  and cover != ''"> and cover = #{cover}</if>
+            <if test="authorId != null "> and author_id = #{authorId}</if>
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectNoteById" parameterType="Long" resultMap="NoteResult">
+        <include refid="selectNoteVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNote" parameterType="Note">
+        insert into tb_note
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="summary != null">summary,</if>
+            <if test="mdContent != null">md_content,</if>
+            <if test="content != null">content,</if>
+            <if test="cover != null">cover,</if>
+            <if test="authorId != null">author_id,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="status != null">status,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="title != null">#{title},</if>
+            <if test="summary != null">#{summary},</if>
+            <if test="mdContent != null">#{mdContent},</if>
+            <if test="content != null">#{content},</if>
+            <if test="cover != null">#{cover},</if>
+            <if test="authorId != null">#{authorId},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNote" parameterType="Note">
+        update tb_note
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="mdContent != null">md_content = #{mdContent},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            <if test="authorId != null">author_id = #{authorId},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNoteById" parameterType="Long">
+        delete from tb_note where id = #{id}
+    </delete>
+
+    <delete id="deleteNoteByIds" parameterType="String">
+        delete from tb_note where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,67 +1,66 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="昵称" prop="username">
+      <el-form-item label="群id" prop="groupId">
         <el-input
-          v-model="queryParams.username"
-          placeholder="昵称"
+          v-model="queryParams.groupId"
+          placeholder="请输入群id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="账号" prop="account">
+      <el-form-item label="发送者id" prop="senderId">
         <el-input
-          v-model="queryParams.account"
-          placeholder="请输入账号"
+          v-model="queryParams.senderId"
+          placeholder="请输入发送者id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-
-      <el-form-item label="手机号" prop="phone">
+      <el-form-item label="接收者id(用户id或群id)" prop="receiverId">
         <el-input
-          v-model="queryParams.phone"
-          placeholder="请输入大陆手机号"
+          v-model="queryParams.receiverId"
+          placeholder="请输入接收者id(用户id或群id)"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
+      <el-form-item label="消息id" prop="messageId">
         <el-input
-          v-model="queryParams.email"
-          placeholder="请输入邮箱"
+          v-model="queryParams.messageId"
+          placeholder="请输入消息id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="大头像" prop="bigAvatar">
+      <el-form-item label="序列号" prop="sequence">
         <el-input
-          v-model="queryParams.bigAvatar"
-          placeholder="请输入用户大头像"
+          v-model="queryParams.sequence"
+          placeholder="请输入序列号"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="头像" prop="miniAvatar">
+      <el-form-item label="签收状态" prop="signFlag">
         <el-input
-          v-model="queryParams.miniAvatar"
-          placeholder="请输入用户头像缩略图"
+          v-model="queryParams.signFlag"
+          placeholder="请输入签收状态"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="二维码" prop="qrcode">
+      <el-form-item label="是否撤回" prop="revoke">
         <el-input
-          v-model="queryParams.qrcode"
-          placeholder="请输入用户二维码"
+          v-model="queryParams.revoke"
+          placeholder="请输入是否撤回"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="会话唯一标识" prop="cid">
+      <el-form-item label="是否删除" prop="deleted">
         <el-input
-          v-model="queryParams.cid"
-          placeholder="请输入会话唯一标识"
+          v-model="queryParams.deleted"
+          placeholder="请输入是否删除"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -80,7 +79,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['manage:user:add']"
+          v-hasPermi="['im:flow:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -91,7 +90,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['manage:user:edit']"
+          v-hasPermi="['im:flow:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -102,7 +101,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['manage:user:remove']"
+          v-hasPermi="['im:flow:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -112,24 +111,26 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['manage:user:export']"
+          v-hasPermi="['im:flow:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="flowList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="用户id" align="center" prop="id" />
-      <el-table-column label="昵称" align="center" prop="username" />
-      <el-table-column label="账号" align="center" prop="account" />
-
-      <el-table-column label="大陆手机号" align="center" prop="phone" />
-      <el-table-column label="邮箱" align="center" prop="email" />
-      <el-table-column label="大头像" align="center" prop="bigAvatar" />
-      <el-table-column label="用户头像" align="center" prop="miniAvatar" />
-      <el-table-column label="二维码" align="center" prop="qrcode" />
-      <el-table-column label="会话唯一标识" align="center" prop="cid" />
+      <el-table-column label="流水id" align="center" prop="id" />
+      <el-table-column label="群id" align="center" prop="groupId" />
+      <el-table-column label="发送者id" align="center" prop="senderId" />
+      <el-table-column label="接收者id(用户id或群id)" align="center" prop="receiverId" />
+      <el-table-column label="会话类型" align="center" prop="chatType" />
+      <el-table-column label="消息类型" align="center" prop="messageType" />
+      <el-table-column label="消息id" align="center" prop="messageId" />
+      <el-table-column label="序列号" align="center" prop="sequence" />
+      <el-table-column label="发送状态" align="center" prop="sendStatus" />
+      <el-table-column label="签收状态" align="center" prop="signFlag" />
+      <el-table-column label="是否撤回" align="center" prop="revoke" />
+      <el-table-column label="是否删除" align="center" prop="deleted" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -137,19 +138,19 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['manage:user:edit']"
+            v-hasPermi="['im:flow:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['manage:user:remove']"
+            v-hasPermi="['im:flow:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-
+    
     <pagination
       v-show="total>0"
       :total="total"
@@ -158,35 +159,32 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改用户对话框 -->
+    <!-- 添加或修改消息流水对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户名，昵称" prop="username">
-          <el-input v-model="form.username" placeholder="请输入用户名，昵称" />
+        <el-form-item label="群id" prop="groupId">
+          <el-input v-model="form.groupId" placeholder="请输入群id" />
         </el-form-item>
-        <el-form-item label="账号，类比QQ号,唯一性" prop="account">
-          <el-input v-model="form.account" placeholder="请输入账号，类比QQ号,唯一性" />
+        <el-form-item label="发送者id" prop="senderId">
+          <el-input v-model="form.senderId" placeholder="请输入发送者id" />
         </el-form-item>
-        <el-form-item label="加密后的密码,盐值为原密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入加密后的密码,盐值为原密码" />
+        <el-form-item label="接收者id(用户id或群id)" prop="receiverId">
+          <el-input v-model="form.receiverId" placeholder="请输入接收者id(用户id或群id)" />
         </el-form-item>
-        <el-form-item label="大陆手机号,唯一性，一个手机只能绑定一个账号" prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入大陆手机号,唯一性，一个手机只能绑定一个账号" />
+        <el-form-item label="消息id" prop="messageId">
+          <el-input v-model="form.messageId" placeholder="请输入消息id" />
         </el-form-item>
-        <el-form-item label="邮箱,唯一性,一个邮箱只能绑定一个账号" prop="email">
-          <el-input v-model="form.email" placeholder="请输入邮箱,唯一性,一个邮箱只能绑定一个账号" />
+        <el-form-item label="序列号" prop="sequence">
+          <el-input v-model="form.sequence" placeholder="请输入序列号" />
         </el-form-item>
-        <el-form-item label="用户大头像" prop="bigAvatar">
-          <el-input v-model="form.bigAvatar" placeholder="请输入用户大头像" />
+        <el-form-item label="签收状态" prop="signFlag">
+          <el-input v-model="form.signFlag" placeholder="请输入签收状态" />
         </el-form-item>
-        <el-form-item label="用户头像缩略图" prop="miniAvatar">
-          <el-input v-model="form.miniAvatar" placeholder="请输入用户头像缩略图" />
+        <el-form-item label="是否撤回" prop="revoke">
+          <el-input v-model="form.revoke" placeholder="请输入是否撤回" />
         </el-form-item>
-        <el-form-item label="用户二维码" prop="qrcode">
-          <el-input v-model="form.qrcode" placeholder="请输入用户二维码" />
-        </el-form-item>
-        <el-form-item label="会话唯一标识" prop="cid">
-          <el-input v-model="form.cid" placeholder="请输入会话唯一标识" />
+        <el-form-item label="是否删除" prop="deleted">
+          <el-input v-model="form.deleted" placeholder="请输入是否删除" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -198,10 +196,10 @@
 </template>
 
 <script>
-import { listUser, getUser, delUser, addUser, updateUser } from "@/api/manage/user";
+import { listFlow, getFlow, delFlow, addFlow, updateFlow } from "@/api/im/flow";
 
 export default {
-  name: "User",
+  name: "Flow",
   data() {
     return {
       // 遮罩层
@@ -216,8 +214,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 用户表格数据
-      userList: [],
+      // 消息流水表格数据
+      flowList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -226,15 +224,17 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        username: null,
-        account: null,
-        password: null,
-        phone: null,
-        email: null,
-        bigAvatar: null,
-        miniAvatar: null,
-        qrcode: null,
-        cid: null,
+        groupId: null,
+        senderId: null,
+        receiverId: null,
+        chatType: null,
+        messageType: null,
+        messageId: null,
+        sequence: null,
+        sendStatus: null,
+        signFlag: null,
+        revoke: null,
+        deleted: null,
       },
       // 表单参数
       form: {},
@@ -247,11 +247,11 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询用户列表 */
+    /** 查询消息流水列表 */
     getList() {
       this.loading = true;
-      listUser(this.queryParams).then(response => {
-        this.userList = response.rows;
+      listFlow(this.queryParams).then(response => {
+        this.flowList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -265,14 +265,17 @@ export default {
     reset() {
       this.form = {
         id: null,
-        username: null,
-        account: null,
-        phone: null,
-        email: null,
-        bigAvatar: null,
-        miniAvatar: null,
-        qrcode: null,
-        cid: null,
+        groupId: null,
+        senderId: null,
+        receiverId: null,
+        chatType: null,
+        messageType: null,
+        messageId: null,
+        sequence: null,
+        sendStatus: null,
+        signFlag: null,
+        revoke: null,
+        deleted: null,
         createTime: null,
         updateTime: null
       };
@@ -298,16 +301,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加用户";
+      this.title = "添加消息流水";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getUser(id).then(response => {
+      getFlow(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改用户";
+        this.title = "修改消息流水";
       });
     },
     /** 提交按钮 */
@@ -315,13 +318,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateUser(this.form).then(response => {
+            updateFlow(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addUser(this.form).then(response => {
+            addFlow(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -333,8 +336,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除用户编号为"' + ids + '"的数据项？').then(function() {
-        return delUser(ids);
+      this.$modal.confirm('是否确认删除消息流水编号为"' + ids + '"的数据项？').then(function() {
+        return delFlow(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -342,9 +345,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('manage/user/export', {
+      this.download('im/flow/export', {
         ...this.queryParams
-      }, `user_${new Date().getTime()}.xlsx`)
+      }, `flow_${new Date().getTime()}.xlsx`)
     }
   }
 };

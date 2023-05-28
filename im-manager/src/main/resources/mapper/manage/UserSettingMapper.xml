@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.UserSettingMapper">
+    
+    <resultMap type="UserSetting" id="UserSettingResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="cardBackground"    column="card_background"    />
+        <result property="talkBackground"    column="talk_background"    />
+        <result property="theme"    column="theme"    />
+        <result property="newMessageRemind"    column="new_message_remind"    />
+        <result property="messageNotify"    column="message_notify"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectUserSettingVo">
+        select id, user_id, card_background, talk_background, theme, new_message_remind, message_notify, create_time, update_time from tb_user_setting
+    </sql>
+
+    <select id="selectUserSettingList" parameterType="UserSetting" resultMap="UserSettingResult">
+        <include refid="selectUserSettingVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="cardBackground != null  and cardBackground != ''"> and card_background = #{cardBackground}</if>
+            <if test="talkBackground != null  and talkBackground != ''"> and talk_background = #{talkBackground}</if>
+            <if test="theme != null "> and theme = #{theme}</if>
+            <if test="newMessageRemind != null "> and new_message_remind = #{newMessageRemind}</if>
+            <if test="messageNotify != null "> and message_notify = #{messageNotify}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserSettingById" parameterType="Long" resultMap="UserSettingResult">
+        <include refid="selectUserSettingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUserSetting" parameterType="UserSetting">
+        insert into tb_user_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="cardBackground != null">card_background,</if>
+            <if test="talkBackground != null">talk_background,</if>
+            <if test="theme != null">theme,</if>
+            <if test="newMessageRemind != null">new_message_remind,</if>
+            <if test="messageNotify != null">message_notify,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="cardBackground != null">#{cardBackground},</if>
+            <if test="talkBackground != null">#{talkBackground},</if>
+            <if test="theme != null">#{theme},</if>
+            <if test="newMessageRemind != null">#{newMessageRemind},</if>
+            <if test="messageNotify != null">#{messageNotify},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserSetting" parameterType="UserSetting">
+        update tb_user_setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="cardBackground != null">card_background = #{cardBackground},</if>
+            <if test="talkBackground != null">talk_background = #{talkBackground},</if>
+            <if test="theme != null">theme = #{theme},</if>
+            <if test="newMessageRemind != null">new_message_remind = #{newMessageRemind},</if>
+            <if test="messageNotify != null">message_notify = #{messageNotify},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserSettingById" parameterType="Long">
+        delete from tb_user_setting where id = #{id}
+    </delete>
+
+    <delete id="deleteUserSettingByIds" parameterType="String">
+        delete from tb_user_setting where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

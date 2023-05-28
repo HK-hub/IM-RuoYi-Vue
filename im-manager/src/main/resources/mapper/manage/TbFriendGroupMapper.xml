@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.TbFriendGroupMapper">
+    
+    <resultMap type="TbFriendGroup" id="TbFriendGroupResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="name"    column="name"    />
+        <result property="count"    column="count"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTbFriendGroupVo">
+        select id, user_id, `name`, `count`, create_time, update_time from tb_friend_group
+    </sql>
+
+    <select id="selectTbFriendGroupList" parameterType="TbFriendGroup" resultMap="TbFriendGroupResult">
+        <include refid="selectTbFriendGroupVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="count != null "> and count = #{count}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbFriendGroupById" parameterType="Long" resultMap="TbFriendGroupResult">
+        <include refid="selectTbFriendGroupVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbFriendGroup" parameterType="TbFriendGroup">
+        insert into tb_friend_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="name != null">name,</if>
+            <if test="count != null">count,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="count != null">#{count},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbFriendGroup" parameterType="TbFriendGroup">
+        update tb_friend_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="count != null">count = #{count},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTbFriendGroupById" parameterType="Long">
+        delete from tb_friend_group where id = #{id}
+    </delete>
+
+    <delete id="deleteTbFriendGroupByIds" parameterType="String">
+        delete from tb_friend_group where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

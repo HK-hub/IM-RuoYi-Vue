@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.SplitUploadMapper">
+    
+    <resultMap type="SplitUpload" id="SplitUploadResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="drive"    column="drive"    />
+        <result property="uploadId"    column="upload_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="originalName"    column="original_name"    />
+        <result property="splitIndex"    column="split_index"    />
+        <result property="splitNum"    column="split_num"    />
+        <result property="path"    column="path"    />
+        <result property="fileExt"    column="file_ext"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSplitUploadVo">
+        select id, type, drive, upload_id, user_id, original_name, split_index, split_num, path, file_ext, file_size, is_delete, create_time, update_time from tb_split_upload
+    </sql>
+
+    <select id="selectSplitUploadList" parameterType="SplitUpload" resultMap="SplitUploadResult">
+        <include refid="selectSplitUploadVo"/>
+        <where>  
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="drive != null  and drive != ''"> and drive = #{drive}</if>
+            <if test="uploadId != null  and uploadId != ''"> and upload_id = #{uploadId}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="originalName != null  and originalName != ''"> and original_name like concat('%', #{originalName}, '%')</if>
+            <if test="splitIndex != null  and splitIndex != ''"> and split_index = #{splitIndex}</if>
+            <if test="splitNum != null  and splitNum != ''"> and split_num = #{splitNum}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="fileExt != null  and fileExt != ''"> and file_ext = #{fileExt}</if>
+            <if test="fileSize != null  and fileSize != ''"> and file_size = #{fileSize}</if>
+            <if test="isDelete != null  and isDelete != ''"> and is_delete = #{isDelete}</if>
+        </where>
+    </select>
+    
+    <select id="selectSplitUploadById" parameterType="String" resultMap="SplitUploadResult">
+        <include refid="selectSplitUploadVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSplitUpload" parameterType="SplitUpload" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_split_upload
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null and type != ''">type,</if>
+            <if test="drive != null and drive != ''">drive,</if>
+            <if test="uploadId != null and uploadId != ''">upload_id,</if>
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="originalName != null and originalName != ''">original_name,</if>
+            <if test="splitIndex != null and splitIndex != ''">split_index,</if>
+            <if test="splitNum != null and splitNum != ''">split_num,</if>
+            <if test="path != null and path != ''">path,</if>
+            <if test="fileExt != null and fileExt != ''">file_ext,</if>
+            <if test="fileSize != null and fileSize != ''">file_size,</if>
+            <if test="isDelete != null and isDelete != ''">is_delete,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="drive != null and drive != ''">#{drive},</if>
+            <if test="uploadId != null and uploadId != ''">#{uploadId},</if>
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="originalName != null and originalName != ''">#{originalName},</if>
+            <if test="splitIndex != null and splitIndex != ''">#{splitIndex},</if>
+            <if test="splitNum != null and splitNum != ''">#{splitNum},</if>
+            <if test="path != null and path != ''">#{path},</if>
+            <if test="fileExt != null and fileExt != ''">#{fileExt},</if>
+            <if test="fileSize != null and fileSize != ''">#{fileSize},</if>
+            <if test="isDelete != null and isDelete != ''">#{isDelete},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSplitUpload" parameterType="SplitUpload">
+        update tb_split_upload
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="drive != null and drive != ''">drive = #{drive},</if>
+            <if test="uploadId != null and uploadId != ''">upload_id = #{uploadId},</if>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="originalName != null and originalName != ''">original_name = #{originalName},</if>
+            <if test="splitIndex != null and splitIndex != ''">split_index = #{splitIndex},</if>
+            <if test="splitNum != null and splitNum != ''">split_num = #{splitNum},</if>
+            <if test="path != null and path != ''">path = #{path},</if>
+            <if test="fileExt != null and fileExt != ''">file_ext = #{fileExt},</if>
+            <if test="fileSize != null and fileSize != ''">file_size = #{fileSize},</if>
+            <if test="isDelete != null and isDelete != ''">is_delete = #{isDelete},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSplitUploadById" parameterType="String">
+        delete from tb_split_upload where id = #{id}
+    </delete>
+
+    <delete id="deleteSplitUploadByIds" parameterType="String">
+        delete from tb_split_upload where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

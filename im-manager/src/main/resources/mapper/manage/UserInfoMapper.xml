@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.UserInfoMapper">
+    
+    <resultMap type="UserInfo" id="UserInfoResult">
+        <result property="userId"    column="user_id"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="qq"    column="qq"    />
+        <result property="wechat"    column="wechat"    />
+        <result property="github"    column="github"    />
+        <result property="dingtalk"    column="dingtalk"    />
+        <result property="openid"    column="openid"    />
+        <result property="wallet"    column="wallet"    />
+        <result property="lastTime"    column="last_time"    />
+        <result property="status"    column="status"    />
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="constellation"    column="constellation"    />
+        <result property="campus"    column="campus"    />
+        <result property="major"    column="major"    />
+        <result property="job"    column="job"    />
+        <result property="city"    column="city"    />
+        <result property="interest"    column="interest"    />
+        <result property="tag"    column="tag"    />
+        <result property="signature"    column="signature"    />
+        <result property="addFriendPolicy"    column="add_friend_policy"    />
+        <result property="addFriendQuestion"    column="add_friend_question"    />
+        <result property="addFriendAnswer"    column="add_friend_answer"    />
+        <result property="storage"    column="storage"    />
+        <result property="background"    column="background"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectUserInfoVo">
+        select user_id, nickname, qq, wechat, github, dingtalk, openid, wallet, last_time, status, gender, age, birthday, constellation, campus, major, job, city, interest, tag, signature, add_friend_policy, add_friend_question, add_friend_answer, storage, background, create_time, update_time from tb_user_info
+    </sql>
+
+    <select id="selectUserInfoList" parameterType="UserInfo" resultMap="UserInfoResult">
+        <include refid="selectUserInfoVo"/>
+        <where>  
+            <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
+            <if test="qq != null  and qq != ''"> and qq = #{qq}</if>
+            <if test="wechat != null  and wechat != ''"> and wechat = #{wechat}</if>
+            <if test="github != null  and github != ''"> and github = #{github}</if>
+            <if test="dingtalk != null  and dingtalk != ''"> and dingtalk = #{dingtalk}</if>
+            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
+            <if test="wallet != null "> and wallet = #{wallet}</if>
+            <if test="lastTime != null "> and last_time = #{lastTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+            <if test="constellation != null  and constellation != ''"> and constellation = #{constellation}</if>
+            <if test="campus != null  and campus != ''"> and campus = #{campus}</if>
+            <if test="major != null  and major != ''"> and major = #{major}</if>
+            <if test="job != null  and job != ''"> and job = #{job}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="interest != null  and interest != ''"> and interest = #{interest}</if>
+            <if test="tag != null  and tag != ''"> and tag = #{tag}</if>
+            <if test="signature != null  and signature != ''"> and signature = #{signature}</if>
+            <if test="addFriendPolicy != null "> and add_friend_policy = #{addFriendPolicy}</if>
+            <if test="addFriendQuestion != null  and addFriendQuestion != ''"> and add_friend_question = #{addFriendQuestion}</if>
+            <if test="addFriendAnswer != null  and addFriendAnswer != ''"> and add_friend_answer = #{addFriendAnswer}</if>
+            <if test="storage != null "> and storage = #{storage}</if>
+            <if test="background != null  and background != ''"> and background = #{background}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserInfoByUserId" parameterType="Long" resultMap="UserInfoResult">
+        <include refid="selectUserInfoVo"/>
+        where user_id = #{userId}
+    </select>
+        
+    <insert id="insertUserInfo" parameterType="UserInfo">
+        insert into tb_user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="qq != null">qq,</if>
+            <if test="wechat != null">wechat,</if>
+            <if test="github != null">github,</if>
+            <if test="dingtalk != null">dingtalk,</if>
+            <if test="openid != null">openid,</if>
+            <if test="wallet != null">wallet,</if>
+            <if test="lastTime != null">last_time,</if>
+            <if test="status != null">status,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="constellation != null">constellation,</if>
+            <if test="campus != null">campus,</if>
+            <if test="major != null">major,</if>
+            <if test="job != null">job,</if>
+            <if test="city != null">city,</if>
+            <if test="interest != null">interest,</if>
+            <if test="tag != null">tag,</if>
+            <if test="signature != null">signature,</if>
+            <if test="addFriendPolicy != null">add_friend_policy,</if>
+            <if test="addFriendQuestion != null">add_friend_question,</if>
+            <if test="addFriendAnswer != null">add_friend_answer,</if>
+            <if test="storage != null">storage,</if>
+            <if test="background != null">background,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="qq != null">#{qq},</if>
+            <if test="wechat != null">#{wechat},</if>
+            <if test="github != null">#{github},</if>
+            <if test="dingtalk != null">#{dingtalk},</if>
+            <if test="openid != null">#{openid},</if>
+            <if test="wallet != null">#{wallet},</if>
+            <if test="lastTime != null">#{lastTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="constellation != null">#{constellation},</if>
+            <if test="campus != null">#{campus},</if>
+            <if test="major != null">#{major},</if>
+            <if test="job != null">#{job},</if>
+            <if test="city != null">#{city},</if>
+            <if test="interest != null">#{interest},</if>
+            <if test="tag != null">#{tag},</if>
+            <if test="signature != null">#{signature},</if>
+            <if test="addFriendPolicy != null">#{addFriendPolicy},</if>
+            <if test="addFriendQuestion != null">#{addFriendQuestion},</if>
+            <if test="addFriendAnswer != null">#{addFriendAnswer},</if>
+            <if test="storage != null">#{storage},</if>
+            <if test="background != null">#{background},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserInfo" parameterType="UserInfo">
+        update tb_user_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="qq != null">qq = #{qq},</if>
+            <if test="wechat != null">wechat = #{wechat},</if>
+            <if test="github != null">github = #{github},</if>
+            <if test="dingtalk != null">dingtalk = #{dingtalk},</if>
+            <if test="openid != null">openid = #{openid},</if>
+            <if test="wallet != null">wallet = #{wallet},</if>
+            <if test="lastTime != null">last_time = #{lastTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="constellation != null">constellation = #{constellation},</if>
+            <if test="campus != null">campus = #{campus},</if>
+            <if test="major != null">major = #{major},</if>
+            <if test="job != null">job = #{job},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="interest != null">interest = #{interest},</if>
+            <if test="tag != null">tag = #{tag},</if>
+            <if test="signature != null">signature = #{signature},</if>
+            <if test="addFriendPolicy != null">add_friend_policy = #{addFriendPolicy},</if>
+            <if test="addFriendQuestion != null">add_friend_question = #{addFriendQuestion},</if>
+            <if test="addFriendAnswer != null">add_friend_answer = #{addFriendAnswer},</if>
+            <if test="storage != null">storage = #{storage},</if>
+            <if test="background != null">background = #{background},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteUserInfoByUserId" parameterType="Long">
+        delete from tb_user_info where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteUserInfoByUserIds" parameterType="String">
+        delete from tb_user_info where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

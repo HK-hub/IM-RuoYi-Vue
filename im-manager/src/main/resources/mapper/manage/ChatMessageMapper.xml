@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.ChatMessageMapper">
+    
+    <resultMap type="ChatMessage" id="ChatMessageResult">
+        <result property="id"    column="id"    />
+        <result property="sequence"    column="sequence"    />
+        <result property="messageFeature"    column="message_feature"    />
+        <result property="messageType"    column="message_type"    />
+        <result property="content"    column="content"    />
+        <result property="url"    column="url"    />
+        <result property="extra"    column="extra"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectChatMessageVo">
+        select id, `sequence`, message_feature, message_type, content, url, extra, deleted, create_time, update_time from tb_chat_message
+    </sql>
+
+    <select id="selectChatMessageList" parameterType="ChatMessage" resultMap="ChatMessageResult">
+        <include refid="selectChatMessageVo"/>
+        <where>  
+            <if test="sequence != null "> and sequence = #{sequence}</if>
+            <if test="messageFeature != null "> and message_feature = #{messageFeature}</if>
+            <if test="messageType != null "> and message_type = #{messageType}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="extra != null  and extra != ''"> and extra = #{extra}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectChatMessageById" parameterType="Long" resultMap="ChatMessageResult">
+        <include refid="selectChatMessageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertChatMessage" parameterType="ChatMessage">
+        insert into tb_chat_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="sequence != null">sequence,</if>
+            <if test="messageFeature != null">message_feature,</if>
+            <if test="messageType != null">message_type,</if>
+            <if test="content != null">content,</if>
+            <if test="url != null">url,</if>
+            <if test="extra != null">extra,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="sequence != null">#{sequence},</if>
+            <if test="messageFeature != null">#{messageFeature},</if>
+            <if test="messageType != null">#{messageType},</if>
+            <if test="content != null">#{content},</if>
+            <if test="url != null">#{url},</if>
+            <if test="extra != null">#{extra},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateChatMessage" parameterType="ChatMessage">
+        update tb_chat_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sequence != null">sequence = #{sequence},</if>
+            <if test="messageFeature != null">message_feature = #{messageFeature},</if>
+            <if test="messageType != null">message_type = #{messageType},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="extra != null">extra = #{extra},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteChatMessageById" parameterType="Long">
+        delete from tb_chat_message where id = #{id}
+    </delete>
+
+    <delete id="deleteChatMessageByIds" parameterType="String">
+        delete from tb_chat_message where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

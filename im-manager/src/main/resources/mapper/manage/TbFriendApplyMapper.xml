@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.TbFriendApplyMapper">
+    
+    <resultMap type="TbFriendApply" id="TbFriendApplyResult">
+        <result property="id"    column="id"    />
+        <result property="senderId"    column="sender_id"    />
+        <result property="acceptorId"    column="acceptor_id"    />
+        <result property="applyType"    column="apply_type"    />
+        <result property="applyInfo"    column="apply_info"    />
+        <result property="status"    column="status"    />
+        <result property="sign"    column="sign"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTbFriendApplyVo">
+        select id, sender_id, acceptor_id, apply_type, apply_info, status, sign, create_time, update_time from tb_friend_apply
+    </sql>
+
+    <select id="selectTbFriendApplyList" parameterType="TbFriendApply" resultMap="TbFriendApplyResult">
+        <include refid="selectTbFriendApplyVo"/>
+        <where>  
+            <if test="senderId != null "> and sender_id = #{senderId}</if>
+            <if test="acceptorId != null "> and acceptor_id = #{acceptorId}</if>
+            <if test="applyType != null "> and apply_type = #{applyType}</if>
+            <if test="applyInfo != null  and applyInfo != ''"> and apply_info = #{applyInfo}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="sign != null "> and sign = #{sign}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbFriendApplyById" parameterType="Long" resultMap="TbFriendApplyResult">
+        <include refid="selectTbFriendApplyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbFriendApply" parameterType="TbFriendApply">
+        insert into tb_friend_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="senderId != null">sender_id,</if>
+            <if test="acceptorId != null">acceptor_id,</if>
+            <if test="applyType != null">apply_type,</if>
+            <if test="applyInfo != null">apply_info,</if>
+            <if test="status != null">status,</if>
+            <if test="sign != null">sign,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="senderId != null">#{senderId},</if>
+            <if test="acceptorId != null">#{acceptorId},</if>
+            <if test="applyType != null">#{applyType},</if>
+            <if test="applyInfo != null">#{applyInfo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbFriendApply" parameterType="TbFriendApply">
+        update tb_friend_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="senderId != null">sender_id = #{senderId},</if>
+            <if test="acceptorId != null">acceptor_id = #{acceptorId},</if>
+            <if test="applyType != null">apply_type = #{applyType},</if>
+            <if test="applyInfo != null">apply_info = #{applyInfo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTbFriendApplyById" parameterType="Long">
+        delete from tb_friend_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteTbFriendApplyByIds" parameterType="String">
+        delete from tb_friend_apply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

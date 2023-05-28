@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.CloudFileMapper">
+    
+    <resultMap type="CloudFile" id="CloudFileResult">
+        <result property="id"    column="id"    />
+        <result property="url"    column="url"    />
+        <result property="userId"    column="user_id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="collection"    column="collection"    />
+        <result property="fDir"    column="f_dir"    />
+        <result property="filetype"    column="filetype"    />
+        <result property="videoId"    column="video_id"    />
+        <result property="size"    column="size"    />
+    </resultMap>
+
+    <sql id="selectCloudFileVo">
+        select id, url, user_id, name, type, create_time, update_time, collection, f_dir, filetype, video_id, size from tb_cloud_file
+    </sql>
+
+    <select id="selectCloudFileList" parameterType="CloudFile" resultMap="CloudFileResult">
+        <include refid="selectCloudFileVo"/>
+        <where>  
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="collection != null "> and collection = #{collection}</if>
+            <if test="fDir != null  and fDir != ''"> and f_dir = #{fDir}</if>
+            <if test="filetype != null  and filetype != ''"> and filetype = #{filetype}</if>
+            <if test="videoId != null  and videoId != ''"> and video_id = #{videoId}</if>
+            <if test="size != null "> and size = #{size}</if>
+        </where>
+    </select>
+    
+    <select id="selectCloudFileById" parameterType="Long" resultMap="CloudFileResult">
+        <include refid="selectCloudFileVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCloudFile" parameterType="CloudFile">
+        insert into tb_cloud_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="url != null">url,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="collection != null">collection,</if>
+            <if test="fDir != null">f_dir,</if>
+            <if test="filetype != null">filetype,</if>
+            <if test="videoId != null">video_id,</if>
+            <if test="size != null">size,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="url != null">#{url},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="collection != null">#{collection},</if>
+            <if test="fDir != null">#{fDir},</if>
+            <if test="filetype != null">#{filetype},</if>
+            <if test="videoId != null">#{videoId},</if>
+            <if test="size != null">#{size},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCloudFile" parameterType="CloudFile">
+        update tb_cloud_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="url != null">url = #{url},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="collection != null">collection = #{collection},</if>
+            <if test="fDir != null">f_dir = #{fDir},</if>
+            <if test="filetype != null">filetype = #{filetype},</if>
+            <if test="videoId != null">video_id = #{videoId},</if>
+            <if test="size != null">size = #{size},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCloudFileById" parameterType="Long">
+        delete from tb_cloud_file where id = #{id}
+    </delete>
+
+    <delete id="deleteCloudFileByIds" parameterType="String">
+        delete from tb_cloud_file where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

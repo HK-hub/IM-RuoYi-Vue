@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.CloudResourceMapper">
+    
+    <resultMap type="CloudResource" id="CloudResourceResult">
+        <result property="id"    column="id"    />
+        <result property="belongId"    column="belong_id"    />
+        <result property="directory"    column="directory"    />
+        <result property="resourceType"    column="resource_type"    />
+        <result property="name"    column="name"    />
+        <result property="description"    column="description"    />
+        <result property="extendType"    column="extend_type"    />
+        <result property="url"    column="url"    />
+        <result property="size"    column="size"    />
+        <result property="hash"    column="hash"    />
+        <result property="md5"    column="md5"    />
+        <result property="count"    column="count"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCloudResourceVo">
+        select id, belong_id, directory, resource_type, name, description, extend_type, url, size, hash, md5, count, deleted, create_time, update_time from tb_cloud_resource
+    </sql>
+
+    <select id="selectCloudResourceList" parameterType="CloudResource" resultMap="CloudResourceResult">
+        <include refid="selectCloudResourceVo"/>
+        <where>  
+            <if test="belongId != null "> and belong_id = #{belongId}</if>
+            <if test="directory != null "> and directory = #{directory}</if>
+            <if test="resourceType != null "> and resource_type = #{resourceType}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="extendType != null  and extendType != ''"> and extend_type = #{extendType}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="size != null "> and size = #{size}</if>
+            <if test="hash != null  and hash != ''"> and hash = #{hash}</if>
+            <if test="md5 != null  and md5 != ''"> and md5 = #{md5}</if>
+            <if test="count != null "> and count = #{count}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectCloudResourceById" parameterType="Long" resultMap="CloudResourceResult">
+        <include refid="selectCloudResourceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCloudResource" parameterType="CloudResource">
+        insert into tb_cloud_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="belongId != null">belong_id,</if>
+            <if test="directory != null">directory,</if>
+            <if test="resourceType != null">resource_type,</if>
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="extendType != null">extend_type,</if>
+            <if test="url != null">url,</if>
+            <if test="size != null">size,</if>
+            <if test="hash != null">hash,</if>
+            <if test="md5 != null">md5,</if>
+            <if test="count != null">count,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="belongId != null">#{belongId},</if>
+            <if test="directory != null">#{directory},</if>
+            <if test="resourceType != null">#{resourceType},</if>
+            <if test="name != null">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="extendType != null">#{extendType},</if>
+            <if test="url != null">#{url},</if>
+            <if test="size != null">#{size},</if>
+            <if test="hash != null">#{hash},</if>
+            <if test="md5 != null">#{md5},</if>
+            <if test="count != null">#{count},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCloudResource" parameterType="CloudResource">
+        update tb_cloud_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="belongId != null">belong_id = #{belongId},</if>
+            <if test="directory != null">directory = #{directory},</if>
+            <if test="resourceType != null">resource_type = #{resourceType},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="extendType != null">extend_type = #{extendType},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="hash != null">hash = #{hash},</if>
+            <if test="md5 != null">md5 = #{md5},</if>
+            <if test="count != null">count = #{count},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCloudResourceById" parameterType="Long">
+        delete from tb_cloud_resource where id = #{id}
+    </delete>
+
+    <delete id="deleteCloudResourceByIds" parameterType="String">
+        delete from tb_cloud_resource where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

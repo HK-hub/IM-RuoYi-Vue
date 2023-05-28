@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.im.mapper.MessageFlowMapper">
+    
+    <resultMap type="MessageFlow" id="MessageFlowResult">
+        <result property="id"    column="id"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="senderId"    column="sender_id"    />
+        <result property="receiverId"    column="receiver_id"    />
+        <result property="chatType"    column="chat_type"    />
+        <result property="messageType"    column="message_type"    />
+        <result property="messageId"    column="message_id"    />
+        <result property="sequence"    column="sequence"    />
+        <result property="sendStatus"    column="send_status"    />
+        <result property="signFlag"    column="sign_flag"    />
+        <result property="revoke"    column="`revoke`"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMessageFlowVo">
+        select id, group_id, sender_id, receiver_id, chat_type, message_type, message_id, `sequence`, send_status, sign_flag, `revoke`, deleted, create_time, update_time from tb_message_flow
+    </sql>
+
+    <select id="selectMessageFlowList" parameterType="MessageFlow" resultMap="MessageFlowResult">
+        <include refid="selectMessageFlowVo"/>
+        <where>  
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="senderId != null "> and sender_id = #{senderId}</if>
+            <if test="receiverId != null "> and receiver_id = #{receiverId}</if>
+            <if test="chatType != null "> and chat_type = #{chatType}</if>
+            <if test="messageType != null "> and message_type = #{messageType}</if>
+            <if test="messageId != null "> and message_id = #{messageId}</if>
+            <if test="sequence != null "> and sequence = #{sequence}</if>
+            <if test="sendStatus != null "> and send_status = #{sendStatus}</if>
+            <if test="signFlag != null "> and sign_flag = #{signFlag}</if>
+            <if test="revoke != null "> and revoke = #{revoke}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectMessageFlowById" parameterType="Long" resultMap="MessageFlowResult">
+        <include refid="selectMessageFlowVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMessageFlow" parameterType="MessageFlow">
+        insert into tb_message_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="senderId != null">sender_id,</if>
+            <if test="receiverId != null">receiver_id,</if>
+            <if test="chatType != null">chat_type,</if>
+            <if test="messageType != null">message_type,</if>
+            <if test="messageId != null">message_id,</if>
+            <if test="sequence != null">sequence,</if>
+            <if test="sendStatus != null">send_status,</if>
+            <if test="signFlag != null">sign_flag,</if>
+            <if test="revoke != null">revoke,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="senderId != null">#{senderId},</if>
+            <if test="receiverId != null">#{receiverId},</if>
+            <if test="chatType != null">#{chatType},</if>
+            <if test="messageType != null">#{messageType},</if>
+            <if test="messageId != null">#{messageId},</if>
+            <if test="sequence != null">#{sequence},</if>
+            <if test="sendStatus != null">#{sendStatus},</if>
+            <if test="signFlag != null">#{signFlag},</if>
+            <if test="revoke != null">#{revoke},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMessageFlow" parameterType="MessageFlow">
+        update tb_message_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="senderId != null">sender_id = #{senderId},</if>
+            <if test="receiverId != null">receiver_id = #{receiverId},</if>
+            <if test="chatType != null">chat_type = #{chatType},</if>
+            <if test="messageType != null">message_type = #{messageType},</if>
+            <if test="messageId != null">message_id = #{messageId},</if>
+            <if test="sequence != null">sequence = #{sequence},</if>
+            <if test="sendStatus != null">send_status = #{sendStatus},</if>
+            <if test="signFlag != null">sign_flag = #{signFlag},</if>
+            <if test="revoke != null">revoke = #{revoke},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMessageFlowById" parameterType="Long">
+        delete from tb_message_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteMessageFlowByIds" parameterType="String">
+        delete from tb_message_flow where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
